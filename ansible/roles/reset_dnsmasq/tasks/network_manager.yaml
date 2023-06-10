@@ -1,0 +1,8 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Delete NetworkManager local dns configuration
+  ansible.builtin.file:
+    path: /etc/NetworkManager/conf.d/local_dns.conf
+    state: absent
+  notify:
+    - Restart NetworkManager

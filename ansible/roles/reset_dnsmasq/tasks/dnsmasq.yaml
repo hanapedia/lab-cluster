@@ -1,0 +1,17 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Stop dnsmasq service
+  ansible.builtin.service:
+    name: dnsmasq
+    state: stopped
+    enabled: false
+
+- name: Delete dnsmasq config
+  ansible.builtin.file:
+    path: /etc/dnsmasq.conf
+    state: absent
+
+- name: Uninstall dnsmasq
+  ansible.builtin.apt:
+    name: dnsmasq
+    state: absent

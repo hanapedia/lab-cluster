@@ -1,0 +1,19 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: physical_machines
+  name: Setup VLAN on network interface
+  become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+  tasks:
+    - name: Include role to reset vlan
+      ansible.builtin.include_role:
+        name: reset_vlan
+      vars:
+        # Default VLAN ID, configured on the network switch
+        vlan_id: "{{ vlan.id }}"
+
+        # The name of interface that vlan will use
+        vlan_interface: "{{ interface_name }}"

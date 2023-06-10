@@ -3,22 +3,27 @@
 - hosts: physical_machines
   name: Set up DHCP and DNS server on the leader physical machine
   become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
   tasks:
     - name: Include role to setup dhcp/dns server
+      when: leader
       ansible.builtin.include_role:
         name: setup_dnsmasq
       vars:
         # The base domain to be used for local DNS resolution
-        cluster_doman: "{{ cluster.domain }}"
+        cluster_domain: "{{ cluster.domain }}"
 
         # Lower bound for dhcp address pool
-        dhcp_ip_lower_bound: "{{ vlan.dns_dhcp.lower_bound }}"
+        dhcp_ip_lower_bound: "{{ vlan.dns_dhcp.lower_bound_ip }}"
 
         # Upper bound for dhcp address pool
-        dhcp_ip_upper_bound: "{{ vlan.dns_dhcp.upper_bound }}"
+        dhcp_ip_upper_bound: "{{ vlan.dns_dhcp.upper_bound_ip }}"
 
         # VLAN gateway address. Used to indicate the exit of this local network
         vlan_gateway: "{{ vlan.gateway }}"
 
         # forward unresolved dns queries to this ip
-        forward_dns_server_ip: "{{ vlan.forward }}"
+        forward_dns_server_ip: "{{ vlan.dns_dhcp.forward }}"

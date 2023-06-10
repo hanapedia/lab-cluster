@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Restart NetworkManager
+  become: true
+  ansible.builtin.service:
+    name: NetworkManager
+    state: restarted

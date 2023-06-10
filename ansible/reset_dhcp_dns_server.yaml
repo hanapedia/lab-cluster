@@ -1,0 +1,14 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: physical_machines
+  name: Reset DHCP and DNS server on the leader physical machine
+  become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+  tasks:
+    - name: Include role to reset dhcp/dns server
+      when: leader
+      ansible.builtin.include_role:
+        name: reset_dnsmasq
