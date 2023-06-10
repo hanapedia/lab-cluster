@@ -1,0 +1,16 @@
+# vim: set filetype=yaml.ansible :
+---
+# The base domain to be used for local DNS resolution
+cluster_doman: cluster.io
+
+# Lower bound for dhcp address pool
+dhcp_ip_lower_bound: 192.168.100.11
+
+# Upper bound for dhcp address pool
+dhcp_ip_upper_bound: 192.168.100.100
+
+# VLAN gateway address. Used to indicate the exit of this local network
+vlan_gateway: 192.168.100.2
+
+# forward unresolved dns queries to this ip
+forward_dns_server_ip: 8.8.8.8

@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Import dnsmasq tasks
+  ansible.builtin.import_tasks: dnsmasq.yaml
+
+- name: Import NetworkManager tasks
+  ansible.builtin.import_tasks: network_manager.yaml

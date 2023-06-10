@@ -1,0 +1,15 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure NetworkManager configuration directory exists
+  ansible.builtin.file:
+    path: /etc/NetworkManager/conf.d
+    state: directory
+    mode: "0640"
+
+- name: Configure NetworkManager for local DNS
+  ansible.builtin.copy:
+    src: local_dns.conf
+    dest: /etc/NetworkManager/conf.d/local_dns.conf
+    mode: "0640"
+  notify:
+    - Restart NetworkManager

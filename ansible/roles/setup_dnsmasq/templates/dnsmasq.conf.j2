@@ -1,0 +1,8 @@
+domain-needed
+bogus-priv
+strict-order
+expand-hosts
+domain={{ cluster_domain }}
+dhcp-range={{ dhcp_ip_lower_bound }},{{ dhcp_ip_upper_bound }},12h
+dhcp-option=option:router,{{ vlan_gateway }}
+server={{ forward_dns_server_ip }}

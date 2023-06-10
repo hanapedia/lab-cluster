@@ -1,0 +1,24 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: physical_machines
+  name: Set up DHCP and DNS server on the leader physical machine
+  become: true
+  tasks:
+    - name: Include role to setup dhcp/dns server
+      ansible.builtin.include_role:
+        name: setup_dnsmasq
+      vars:
+        # The base domain to be used for local DNS resolution
+        cluster_doman: "{{ cluster.domain }}"
+
+        # Lower bound for dhcp address pool
+        dhcp_ip_lower_bound: "{{ vlan.dns_dhcp.lower_bound }}"
+
+        # Upper bound for dhcp address pool
+        dhcp_ip_upper_bound: "{{ vlan.dns_dhcp.upper_bound }}"
+
+        # VLAN gateway address. Used to indicate the exit of this local network
+        vlan_gateway: "{{ vlan.gateway }}"
+
+        # forward unresolved dns queries to this ip
+        forward_dns_server_ip: "{{ vlan.forward }}"
