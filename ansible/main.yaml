@@ -1,0 +1,3 @@
+# vim: set filetype=yaml.ansible :
+---
+- import_playbook: setup_pm_networking.yaml

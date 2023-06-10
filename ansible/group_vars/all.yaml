@@ -1,0 +1,28 @@
+# vim: set filetype=yaml.ansible :
+---
+# The name will be used for the domain name of the cluster as well
+cluster:
+  domain: cluster.io
+
+vlan:
+  # Default VLAN ID, configured on the network switch
+  id: 4
+
+  # The subnet of VLAN
+  subnet: 192.168.100.0/24
+
+  # The IP address of the VLAN gateway configured on the network switch
+  gateway: 192.168.100.2
+
+  dns_dhcp:
+    # Static IP address assigned to lab1, which serves DHCP/DNS
+    server_ip: 192.168.100.3
+
+    # Lower bound for address pool
+    lower_bound_ip: 192.168.100.11
+
+    # Upper bound for address pool
+    upper_bound_ip: 192.168.100.100
+
+    # forward unresolved dns queries to this ip
+    forward: 8.8.8.8
