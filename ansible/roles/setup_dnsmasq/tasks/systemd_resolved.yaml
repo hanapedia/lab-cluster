@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Disable and stop systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
