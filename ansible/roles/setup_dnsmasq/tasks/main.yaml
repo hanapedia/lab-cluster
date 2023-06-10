@@ -1,5 +1,8 @@
 # vim: set filetype=yaml.ansible :
 ---
+- name: Import systemd-resolved tasks
+  ansible.builtin.import_tasks: systemd_resolved.yaml
+
 - name: Import dnsmasq tasks
   ansible.builtin.import_tasks: dnsmasq.yaml
 

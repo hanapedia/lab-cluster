@@ -1,13 +1,9 @@
 # vim: set filetype=yaml.ansible :
 ---
-- name: Debug
-  ansible.builtin.debug:
-    var: vlan_ip
 - name: Install necessary packages
   ansible.builtin.apt:
     name:
       - "vlan"
-      - "bridge-utils"
       - "network-manager"
     state: present
 
