@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+---
+all:
+  children:
+    physical_machines:
+      hosts:
+        lab1:
+        # lab2:
+      vars:
+        environment: pm
