@@ -8,10 +8,16 @@
   vars:
     ansible_become_password: "{{ sudo_password }}"
   tasks:
-    - name: Include role to setup dhcp/dns server
+    - name: Set fact with IP address of leader physical_machines
+      ansible.builtin.set_fact:
+        leader_ip_address: "{{ hostvars[item].ip_address }}"
+      when: hostvars[item].leader | default(false) | bool
+      loop: "{{ groups['physical_machines'] }}"
+
+    - name: Include role to setup dhcp/dns server on leader machine
       when: leader
       ansible.builtin.include_role:
-        name: setup_dnsmasq
+        name: setup_dnsmasq_server
       vars:
         # The base domain to be used for local DNS resolution
         cluster_domain: "{{ cluster.domain }}"
@@ -27,3 +33,22 @@
 
         # forward unresolved dns queries to this ip
         forward_dns_server_ip: "{{ vlan.dns_dhcp.forward }}"
+
+    - name: Include role to use dhcp/dns server on non-leader machines
+      when: not leader
+      ansible.builtin.include_role:
+        name: setup_dnsmasq_client
+      vars:
+        # forward unresolved dns queries to this ip
+        forward_dns_server_ip: "{{ vlan.dns_dhcp.forward }}"
+        # Default VLAN ID, configured on the network switch
+        vlan_id: "{{ vlan.id }}"
+
+        # The IP address of the VLAN gateway configured on the network switch
+        vlan_gateway: "{{ vlan.gateway }}"
+
+        # The IP address that will be assigned to the vlan interface
+        vlan_ip: "{{ ip_address }}"
+
+        # The name of interface that vlan will use
+        vlan_interface: "{{ interface_name }}"

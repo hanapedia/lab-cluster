@@ -11,4 +11,4 @@
     - name: Include role to reset dhcp/dns server
       when: leader
       ansible.builtin.include_role:
-        name: reset_dnsmasq
+        name: reset_dnsmasq_server
