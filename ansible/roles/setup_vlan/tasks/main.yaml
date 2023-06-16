@@ -1,48 +1,66 @@
 # vim: set filetype=yaml.ansible :
 ---
-- name: Install necessary packages
-  ansible.builtin.apt:
-    name:
-      - "vlan"
-      - "network-manager"
-    state: present
+- name: Common setup
+  block:
+    - name: Install necessary packages
+      ansible.builtin.apt:
+        name:
+          - "vlan"
+          - "network-manager"
+        state: present
 
-- name: Load 8021q module for VLAN
-  ansible.builtin.modprobe:
-    name: 8021q
-    state: present
+    - name: Load 8021q module for VLAN
+      ansible.builtin.modprobe:
+        name: 8021q
+        state: present
 
-- name: Add 8021q to /etc/modules
-  ansible.builtin.lineinfile:
-    path: /etc/modules
-    line: 8021q
+    - name: Add 8021q to /etc/modules
+      ansible.builtin.lineinfile:
+        path: /etc/modules
+        line: 8021q
 
-- name: Ensure NetworkManager configuration directory exists
-  ansible.builtin.file:
-    path: /etc/NetworkManager/conf.d
-    state: directory
-    mode: "0640"
+    - name: Ensure NetworkManager configuration directory exists
+      ansible.builtin.file:
+        path: /etc/NetworkManager/conf.d
+        state: directory
+        mode: "0640"
 
-- name: Configure NetworkManager for local DNS
-  ansible.builtin.copy:
-    src: 10-device.conf
-    dest: /etc/NetworkManager/conf.d/10-device.conf
-    mode: "0640"
-  notify:
-    - Restart NetworkManager
+    - name: Configure NetworkManager to manage all devices
+      ansible.builtin.copy:
+        src: 10-device.conf
+        dest: /etc/NetworkManager/conf.d/10-device.conf
+        mode: "0640"
+      notify:
+        - Restart NetworkManager
 
-- name: Manage the network interface with NetworkManager
-  changed_when: true
-  ansible.builtin.command:
-    cmd: "nmcli device set {{ vlan_interface }} managed yes"
+    - name: Manage the network interface with NetworkManager
+      changed_when: true
+      ansible.builtin.command:
+        cmd: "nmcli device set {{ vlan_interface }} managed yes"
 
-- name: Create VLAN interface on physical machine
-  community.general.nmcli:
-    conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
-    type: vlan
-    ip4: "{{ vlan_ip }}/24"
-    gw4: "{{ vlan_gateway }}"
-    state: present
-    vlanid: "{{ vlan_id }}"
-    vlandev: "{{ vlan_interface }}"
-    autoconnect: true
+- name: Leader setup
+  when: leader
+  block:
+    - name: Create VLAN interface on physical machine
+      community.general.nmcli:
+        conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
+        type: vlan
+        ip4: "{{ vlan_ip ~ '/24' }}"
+        gw4: "{{ vlan_gateway }}"
+        state: present
+        vlanid: "{{ vlan_id }}"
+        vlandev: "{{ vlan_interface }}"
+        autoconnect: true
+
+- name: Follower setup
+  when: not leader
+  block:
+    - name: Create VLAN interface on physical machine
+      community.general.nmcli:
+        conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
+        type: vlan
+        method4: auto
+        state: present
+        vlanid: "{{ vlan_id }}"
+        vlandev: "{{ vlan_interface }}"
+        autoconnect: true

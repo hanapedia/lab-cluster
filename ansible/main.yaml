@@ -1,4 +1,4 @@
 # vim: set filetype=yaml.ansible :
 ---
-- import_playbook: setup_pm_networking.yaml
-- import_playbook: setup_dhcp_dns_server.yaml
+- import_playbook: setup_vlan_leader.yaml
+- import_playbook: setup_vlan_follower.yaml

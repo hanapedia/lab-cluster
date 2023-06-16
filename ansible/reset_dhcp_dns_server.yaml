@@ -1,6 +1,6 @@
 # vim: set filetype=yaml.ansible :
 ---
-- hosts: physical_machines
+- hosts: leaders
   name: Reset DHCP and DNS server on the leader physical machine
   become: true
   vars_files:

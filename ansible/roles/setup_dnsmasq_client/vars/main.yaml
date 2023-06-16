@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+
+# Default VLAN ID, configured on the network switch
+vlan_id: 4
+
+# Interface name on lab1
+vlan_interface: enp0s31f6
+
+# Static IP address assigned to lab1, which serves DHCP/DNS
+leader_ip_address: 192.168.100.3

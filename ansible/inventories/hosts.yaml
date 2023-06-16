@@ -3,8 +3,12 @@
 all:
   children:
     physical_machines:
+      children:
+        leaders:
+        followers:
+    leaders:
       hosts:
         lab1:
-        # lab2:
-      vars:
-        environment: pm
+    followers:
+      hosts:
+        lab2:

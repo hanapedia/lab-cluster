@@ -14,3 +14,9 @@ vlan_gateway: 192.168.100.2
 
 # forward unresolved dns queries to this ip
 forward_dns_server_ip: 8.8.8.8
+
+# Default VLAN ID, configured on the network switch
+vlan_id: 4
+
+# Interface name on lab1
+vlan_interface: enp0s31f6

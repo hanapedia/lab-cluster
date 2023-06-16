@@ -2,6 +2,6 @@
 ---
 - name: Configure network interface to use DNS server
   nmcli:
-    conn_name: '{{ interface_name }}'
-    dns4: '{{ dns_server_ip }}'
+    conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
+    dns4: "{{ leader_ip_address }}"
     state: present
