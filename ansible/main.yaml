@@ -1,4 +1,0 @@
-# vim: set filetype=yaml.ansible :
----
-- import_playbook: setup_vlan_leader.yaml
-- import_playbook: setup_vlan_follower.yaml
