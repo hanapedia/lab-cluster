@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Import package installation tasks
+  ansible.builtin.import_tasks: installation.yaml
+
+- name: Setup watchdog
+  ansible.builtin.import_tasks: watchdog.yaml

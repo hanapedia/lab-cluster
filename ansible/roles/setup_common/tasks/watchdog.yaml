@@ -1,0 +1,17 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Enable watchdog
+  ansible.builtin.systemd:
+    name: watchdog
+    enabled: true
+    state: started
+
+- name: Configure watchdog
+  ansible.builtin.lineinfile:
+    path: /etc/watchdog.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^#watchdog-device', line: 'watchdog-device = /dev/watchdog' }
+  notify:
+    - Restart watchdog
