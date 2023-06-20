@@ -13,9 +13,3 @@
     mode: "0640"
   notify:
     - Restart NetworkManager
-
-- name: Configure network interface to use localhost DNS server
-  nmcli:
-    conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
-    dns4: 127.0.0.1
-    state: present

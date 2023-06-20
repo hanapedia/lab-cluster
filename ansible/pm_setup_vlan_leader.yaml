@@ -8,6 +8,12 @@
   vars:
     ansible_become_password: "{{ sudo_password }}"
   tasks:
+    - name: Set fact with IP address of leader physical_machines
+      ansible.builtin.set_fact:
+        leader_ip_address: "{{ hostvars[item].ip_address }}"
+      when: hostvars[item].leader | default(false) | bool
+      loop: "{{ groups['leaders'] }}"
+
     - name: Include role to setup vlan
       when: leader
       ansible.builtin.include_role:
@@ -25,10 +31,13 @@
         # The name of interface that vlan will use
         vlan_interface: "{{ interface_name }}"
 
+        # The name of the bridge to be used by the virtual network
+        bridge_name: "{{ bridge.name }}"
+
     - name: Include role to setup dhcp/dns server on leader machine
       when: leader
       ansible.builtin.include_role:
-        name: setup_dnsmasq_server
+        name: setup_dnsmasq
       vars:
         # The base domain to be used for local DNS resolution
         cluster_domain: "{{ cluster.domain }}"
@@ -50,3 +59,6 @@
 
         # The name of interface that vlan will use
         vlan_interface: "{{ interface_name }}"
+
+        # The name of the bridge to be used by the virtual network
+        bridge_name: "{{ bridge.name }}"

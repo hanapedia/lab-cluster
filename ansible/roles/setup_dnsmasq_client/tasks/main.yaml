@@ -1,7 +1,0 @@
-# vim: set filetype=yaml.ansible :
----
-- name: Configure network interface to use DNS server
-  nmcli:
-    conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
-    dns4: "{{ leader_ip_address }}"
-    state: present

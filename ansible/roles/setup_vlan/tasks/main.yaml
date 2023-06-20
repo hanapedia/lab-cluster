@@ -41,26 +41,11 @@
 - name: Leader setup
   when: leader
   block:
-    - name: Create VLAN interface on physical machine
-      community.general.nmcli:
-        conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
-        type: vlan
-        ip4: "{{ vlan_ip ~ '/24' }}"
-        gw4: "{{ vlan_gateway }}"
-        state: present
-        vlanid: "{{ vlan_id }}"
-        vlandev: "{{ vlan_interface }}"
-        autoconnect: true
+    - name: Import leader tasks
+      ansible.builtin.import_tasks: leader.yaml
 
 - name: Follower setup
   when: not leader
   block:
-    - name: Create VLAN interface on physical machine
-      community.general.nmcli:
-        conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
-        type: vlan
-        method4: auto
-        state: present
-        vlanid: "{{ vlan_id }}"
-        vlandev: "{{ vlan_interface }}"
-        autoconnect: true
+    - name: Import follower tasks
+      ansible.builtin.import_tasks: follower.yaml

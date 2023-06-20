@@ -26,3 +26,7 @@ vlan:
 
     # forward unresolved dns queries to this ip
     forward: 8.8.8.8
+
+bridge:
+  # The name of the bridge to be used by the virtual network
+  name: br0

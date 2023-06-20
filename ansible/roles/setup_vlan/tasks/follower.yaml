@@ -1,0 +1,21 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Create bridge interface
+  community.general.nmcli:
+    conn_name: "{{ bridge_name }}"
+    type: bridge
+    method4: auto
+    dns4: "{{ leader_ip_address }}"
+    state: present
+    autoconnect: true
+
+- name: Create VLAN interface on physical machine
+  community.general.nmcli:
+    conn_name: "{{ vlan_interface }}.{{ vlan_id }}"
+    type: vlan
+    state: present
+    vlanid: "{{ vlan_id }}"
+    vlandev: "{{ vlan_interface }}"
+    master: "{{ bridge_name }}"
+    slave_type: bridge
+    autoconnect: true

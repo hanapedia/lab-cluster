@@ -1,7 +1,7 @@
 # vim: set filetype=yaml.ansible :
 ---
 - hosts: physical_machines
-  name: Setup VLAN on network interface
+  name: Reset VLAN on network interface
   become: true
   vars_files:
     - ./vars/secret.yaml

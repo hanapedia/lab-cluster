@@ -12,6 +12,13 @@
     dest: /etc/dnsmasq.conf
     mode: "0640"
 
+- name: Update /etc/hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1.*{{ ansible_hostname }}'
+    line: '{{ leader_ip_address }} {{ ansible_hostname }}'
+    state: present
+
 - name: Ensure dnsmasq is running
   ansible.builtin.service:
     name: dnsmasq
