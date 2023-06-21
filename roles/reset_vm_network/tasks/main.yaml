@@ -1,0 +1,11 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Delete VLAN interface on physical machine for network bridge
+  community.general.nmcli:
+    conn_name: "{{ vlan_interface }}.{{ vlan_id }}.{{ bridge_name }}"
+    state: absent
+
+- name: Delete bridge interface
+  community.general.nmcli:
+    conn_name: "{{ bridge_name }}"
+    state: absent
