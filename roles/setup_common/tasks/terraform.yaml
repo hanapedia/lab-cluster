@@ -1,0 +1,16 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Add HashiCorp GPG key
+  ansible.builtin.apt_key:
+    url: "{{ terraform.key_url }}"
+    state: present
+
+- name: Add HashiCorp APT repository
+  ansible.builtin.apt_repository:
+    repo: "{{ terraform.repo }}"
+    state: present
+
+- name: Install Terraform
+  ansible.builtin.apt:
+    name: terraform
+    state: present

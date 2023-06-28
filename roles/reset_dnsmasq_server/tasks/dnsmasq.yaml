@@ -11,7 +11,7 @@
     path: /etc/dnsmasq.conf
     state: absent
 
-- name: Uninstall dnsmasq
-  ansible.builtin.apt:
-    name: dnsmasq
-    state: absent
+# - name: Uninstall dnsmasq
+#   ansible.builtin.apt:
+#     name: dnsmasq
+#     state: absent

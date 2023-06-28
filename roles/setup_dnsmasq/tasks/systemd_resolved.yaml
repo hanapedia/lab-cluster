@@ -5,3 +5,17 @@
     name: systemd-resolved
     state: stopped
     enabled: false
+
+- name: Create /etc/resolv.dnsmasq file
+  ansible.builtin.copy:
+    content: "nameserver 127.0.0.1\n"
+    dest: /etc/resolv.dnsmasq
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Overwrite /etc/resolv.conf symlink
+  ansible.builtin.file:
+    src: /etc/resolv.dnsmasq
+    dest: /etc/resolv.conf
+    state: link

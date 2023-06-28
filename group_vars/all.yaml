@@ -4,6 +4,9 @@
 cluster:
   domain: cluster.io
 
+  # name of the user that will be used on all machines
+  user: hanapedia
+
 vlan:
   # Default VLAN ID, configured on the network switch
   id: 4

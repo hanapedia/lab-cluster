@@ -4,3 +4,8 @@
   ansible.builtin.systemd:
     name: watchdog
     state: restarted
+
+- name: Restart libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd
+    state: restarted

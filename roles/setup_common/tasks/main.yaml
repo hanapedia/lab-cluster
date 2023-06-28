@@ -3,5 +3,11 @@
 - name: Import package installation tasks
   ansible.builtin.import_tasks: installation.yaml
 
+- name: Setup libvirt
+  ansible.builtin.import_tasks: libvirt.yaml
+
 - name: Setup watchdog
   ansible.builtin.import_tasks: watchdog.yaml
+
+- name: Install Terraform
+  ansible.builtin.import_tasks: terraform.yaml

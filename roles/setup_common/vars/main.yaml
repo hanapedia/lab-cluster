@@ -1,9 +1,18 @@
 # vim: set filetype=yaml.ansible :
 ---
 packages:
+  - software-properties-common
+  - gnupg
+  - wget
   - bridge-utils
   - cpu-checker
   - libvirt-clients
   - libvirt-daemon
+  - libvirt-daemon-system
   - qemu
   - qemu-kvm
+  - genisoimage
+
+terraform:
+  repo: "deb [arch=amd64] https://apt.releases.hashicorp.com jammy main"
+  key_url: "https://apt.releases.hashicorp.com/gpg"

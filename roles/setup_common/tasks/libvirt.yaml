@@ -1,0 +1,43 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Enable and start libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd
+    enabled: true
+    state: started
+
+- name: Add user to libvirt group
+  ansible.builtin.user:
+    name: "{{ cluster.user }}"
+    groups: libvirt
+    append: true
+
+- name: Set permissions on libvirt socket file
+  ansible.builtin.file:
+    path: /var/run/libvirt/libvirt-sock
+    owner: root
+    group: libvirt
+    mode: '0660'
+
+- name: Change user in libvirt qemu configuration
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/qemu.conf
+    regexp: '^#user = "root"'
+    line: 'user = "{{ cluster.user }}"'
+    state: present
+
+- name: Change group in libvirt qemu configuration
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/qemu.conf
+    regexp: '^#group = "root"'
+    line: 'group = "libvirt"'
+    state: present
+
+- name: Disable SELinux on qemu
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/qemu.conf
+    regexp: '#security_driver = "selinux"'
+    line: 'security_driver = "none"'
+    state: present
+  notify:
+    - Restart libvirtd
