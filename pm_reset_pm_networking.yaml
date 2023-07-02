@@ -17,3 +17,6 @@
 
         # The name of interface that vlan will use
         vlan_interface: "{{ interface_name }}"
+
+        # The name of bridge interface
+        bridge_name: "{{ bridge.name }}"

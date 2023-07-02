@@ -1,0 +1,50 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure that directories exist
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/out/{{ host }}/"
+    state: directory
+    recurse: true
+
+- name: Clone kvm provisioner repository
+  ansible.builtin.git:
+    repo: git@github.com:hanapedia/kvm-provisioner.git
+    dest: "{{ playbook_dir }}/out/{{ host }}/"
+    single_branch: true
+    version: main
+
+- name: Ensure that network directory exist
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/out/{{ host }}/network"
+    state: directory
+    mode: "0755"
+
+- name: Create variables files for network
+  ansible.builtin.template:
+    src: network.tfvars.j2
+    dest: "{{ playbook_dir }}/out/{{ host }}/network/network.tfvars"
+    mode: "0755"
+
+- name: Ensure that pool directory exist
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/out/{{ host }}/pool"
+    state: directory
+    mode: "0755"
+
+- name: Create variables files for pool
+  ansible.builtin.template:
+    src: pool.tfvars.j2
+    dest: "{{ playbook_dir }}/out/{{ host }}/pool/pool.tfvars"
+    mode: "0755"
+
+- name: Ensure that domain directory exist
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/out/{{ host }}/domain"
+    state: directory
+    mode: "0755"
+
+- name: Create variables files for domain
+  ansible.builtin.template:
+    src: domain.tfvars.j2
+    dest: "{{ playbook_dir }}/out/{{ host }}/domain/domain.tfvars"
+    mode: "0755"

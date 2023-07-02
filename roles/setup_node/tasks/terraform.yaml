@@ -1,0 +1,23 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure that destination directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/kvm-provisioner"
+    state: directory
+    mode: "0755"
+
+- name: Copy terraform target poject to hosts
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/out/{{ inventory_hostname }}/{{ target }}"
+    dest: "{{ ansible_env.HOME }}/kvm-provisioner/"
+    mode: "0755"
+
+- name: Initialize target Terraform
+  ansible.builtin.command:
+    cmd: terraform init
+    chdir: "{{ ansible_env.HOME }}/kvm-provisioner/{{ target }}"
+
+- name: Apply target Terraform
+  ansible.builtin.command:
+    cmd: "terraform apply -auto-approve -var-file={{ target }}.tfvars"
+    chdir: "{{ ansible_env.HOME }}/kvm-provisioner/{{ target }}"

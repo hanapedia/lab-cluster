@@ -1,13 +1,12 @@
 # vim: set filetype=yaml.ansible :
 ---
 - hosts: physical_machines
-  name: Common setup on the physical machines
-  become: true
+  name: Prepare vm configuration
   vars_files:
     - ./vars/secret.yaml
   vars:
     ansible_become_password: "{{ sudo_password }}"
   tasks:
-    - name: Include role to run the common setup
+    - name: Include role to setup vm on physical machines
       ansible.builtin.include_role:
-        name: setup_common
+        name: reset_node

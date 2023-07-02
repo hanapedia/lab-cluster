@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: nodes
+  name: Wait for the vm connection
+  become: true
+  tasks:
+    - name: Check connection
+      ansible.builtin.wait_for_connection:
+        delay: 1
+        timeout: 10

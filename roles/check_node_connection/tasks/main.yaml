@@ -1,0 +1,15 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Get current unix timestamp
+  ansible.builtin.command: date +%s
+  register: current_timestamp
+  changed_when: true
+
+- name: Wait for leases
+  ansible.builtin.shell: awk '$1 > {{ current_timestamp.stdout }} && $4 == "{{ item }}"' /var/lib/misc/dnsmasq.leases
+  register: result
+  until: result.stdout != ""
+  retries: 60
+  delay: 10
+  loop: "{{ node_names }}"
+  changed_when: true

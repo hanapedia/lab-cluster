@@ -1,0 +1,8 @@
+# GENERATED FROM TEMPLATE
+libvirt_uri = "qemu:///system"
+namespace = "{{ namespace }}"
+bridge = "{{ bridge_name }}"
+vnet = {
+  gateway = "{{ vnet.gateway }}"
+  cidr = {{ vnet.cidr }}
+}

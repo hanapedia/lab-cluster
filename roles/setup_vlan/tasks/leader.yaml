@@ -6,7 +6,7 @@
     type: bridge
     ip4: "{{ vlan_ip ~ '/24' }}"
     gw4: "{{ vlan_gateway }}"
-    dns4: "{{ leader_ip_address }}"
+    dns4: "{{ leader_ip_address }} 8.8.8.8 8.8.4.4"
     state: present
     autoconnect: true
 

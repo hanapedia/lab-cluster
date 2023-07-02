@@ -1,0 +1,10 @@
+# GENERATED FROM TEMPLATE
+all:
+  children:
+    nodes:
+      hosts:
+{% for node in node_configs %}
+        {{ node.name }}:
+          ansible_user: ubuntu
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q {{ host }}"'
+{% endfor %}

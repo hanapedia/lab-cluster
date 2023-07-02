@@ -8,7 +8,10 @@
 
 - name: Create /etc/resolv.dnsmasq file
   ansible.builtin.copy:
-    content: "nameserver 127.0.0.1\n"
+    content: |
+      nameserver 127.0.0.1
+      nameserver 8.8.8.8
+      nameserver 8.8.4.4
     dest: /etc/resolv.dnsmasq
     owner: root
     group: root

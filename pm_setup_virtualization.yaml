@@ -1,1 +1,44 @@
 # vim: set filetype=yaml.ansible :
+---
+- hosts: localhost
+  name: Prepare vm configuration
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ localhost_sudo_password }}"
+  tasks:
+    - name: Include role to run the vm configuration preparation
+      ansible.builtin.include_role:
+        name: prepare_node_config
+      vars:
+        host: "{{ physical_machine }}"
+        bridge_name: "{{ bridge.name }}"
+        nodes: "{{ hostvars[physical_machine]['nodes'] }}"
+      loop: "{{ groups['physical_machines'] }}"
+      loop_control:
+        loop_var: physical_machine
+
+- hosts: physical_machines
+  name: Prepare vm configuration
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+  tasks:
+    - name: Include role to setup vm on physical machines
+      ansible.builtin.include_role:
+        name: setup_node
+
+- hosts: leaders
+  name: Wait for the vm leases
+  become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+  tasks:
+    - name: Include role to wait for connection
+      ansible.builtin.include_role:
+        name: check_node_connection
+      vars:
+        node_names: groups['nodes']

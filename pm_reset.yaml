@@ -1,5 +1,4 @@
 # vim: set filetype=yaml.ansible :
 ---
-- import_playbook: pm_reset_vm_networking.yaml
 - import_playbook: pm_reset_dhcp_dns_server.yaml
 - import_playbook: pm_reset_pm_networking.yaml

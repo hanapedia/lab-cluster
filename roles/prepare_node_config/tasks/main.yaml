@@ -1,0 +1,37 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Set config as fact
+  block:
+    - name: Initialize config with empty
+      ansible.builtin.set_fact:
+        node_configs: []
+
+    - name: Build small node_configs
+      ansible.builtin.set_fact:
+        node_configs: "{{ node_configs + [{'name': 'small' + (i | string) + '-' + host, 'node_group': 'small'}] }}"
+      loop: "{{ range(1, nodes.small + 1) }}"
+      loop_control:
+        loop_var: i
+      when: nodes.small is defined
+
+    - name: Build medium node_configs
+      ansible.builtin.set_fact:
+        node_configs: "{{ node_configs + [{'name': 'medium' + (i | string) + '-' + host, 'node_group': 'medium'}] }}"
+      loop: "{{ range(1, nodes.medium + 1) }}"
+      loop_control:
+        loop_var: i
+      when: nodes.medium is defined
+
+    - name: Build large node_configs
+      ansible.builtin.set_fact:
+        node_configs: "{{ node_configs + [{'name': 'large' + (i | string) + '-' + host, 'node_group': 'large'}] }}"
+      loop: "{{ range(1, nodes.large + 1) }}"
+      loop_control:
+        loop_var: i
+      when: nodes.large is defined
+
+- name: Import network terraform preparation tasks
+  ansible.builtin.import_tasks: resource.yaml
+
+- name: Import inventory generation task
+  ansible.builtin.import_tasks: inventory.yaml

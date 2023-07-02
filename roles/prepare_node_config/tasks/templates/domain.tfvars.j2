@@ -1,0 +1,12 @@
+# GENERATED FROM TEMPLATE
+libvirt_uri = "qemu:///system"
+namespace = "{{ namespace }}"
+ubuntu_22_img_url = "{{ ubuntu_22_img_url }}"
+node_configs = [
+{% for node in node_configs %}
+  {
+    name = "{{ node.name }}"
+    node_group = "{{ node.node_group }}"
+  },
+{% endfor %}
+]

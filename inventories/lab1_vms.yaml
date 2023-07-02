@@ -1,0 +1,14 @@
+# GENERATED FROM TEMPLATE
+all:
+  children:
+    nodes:
+      hosts:
+        small1-lab1:
+          ansible_user: ubuntu
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
+        medium1-lab1:
+          ansible_user: ubuntu
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
+        medium2-lab1:
+          ansible_user: ubuntu
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'

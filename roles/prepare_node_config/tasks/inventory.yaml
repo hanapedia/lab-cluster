@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Generate inventory file for the vms
+  ansible.builtin.template:
+    src: inventory.yaml.j2
+    dest: "{{ playbook_dir }}/inventories/{{ host }}_vms.yaml"
+    mode: "755"
+
+- name: Refresh inventory
+  ansible.builtin.meta: refresh_inventory

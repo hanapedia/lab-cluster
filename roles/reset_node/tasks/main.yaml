@@ -1,0 +1,16 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Import domain terraform destroy tasks
+  ansible.builtin.import_tasks: terraform.yaml
+  vars:
+    target: domain
+
+- name: Import pool terraform destroy tasks
+  ansible.builtin.import_tasks: terraform.yaml
+  vars:
+    target: pool
+
+- name: Import network terraform destroy tasks
+  ansible.builtin.import_tasks: terraform.yaml
+  vars:
+    target: network

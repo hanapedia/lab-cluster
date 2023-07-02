@@ -1,0 +1,42 @@
+# vim: set filetype=yaml.ansible :
+---
+# hostname that this configuration is meant for
+host: lab2
+
+# namespace used for defining libvirt resources
+namespace: lab
+
+# bridge device on the host connected to vlan
+bridge_name: br0
+
+# vnet on the host to access internet
+vnet:
+  # gateway ip of the vnet
+  gateway: 192.168.101.1
+
+  # cidr block for the vnet
+  cidr: 24
+
+# url of the guest os base image
+ubuntu_22_img_url: https://cloud-images.ubuntu.com/releases/jammy/release/ubuntu-22.04-server-cloudimg-amd64.img
+
+# default node counts
+# recommended to be set from host vars
+nodes:
+  small: 1
+
+# config for nodes to be created
+# name: name that will be assigned to the vm
+#   should follow "[node_group][index]-[host]" naming convention
+# node_group: node_group determines the spec of the vm
+#   small: 2 cpu, 4GiB memory, 10GB disk
+#   medium: 4 cpu, 8GiB memory, 20GB disk
+#   large: 8 cpu, 16GiB memory, 40GB disk
+node_configs: [] # READONLY
+  # - name: small1-lab2
+  #   node_group: small
+  # - name: medium1-lab2
+  #   node_group: medium
+  # - name: large1-lab2
+  #   node_group: large
+  #

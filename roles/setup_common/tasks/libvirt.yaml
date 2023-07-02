@@ -9,7 +9,9 @@
 - name: Add user to libvirt group
   ansible.builtin.user:
     name: "{{ cluster.user }}"
-    groups: libvirt
+    groups:
+      - libvirt
+      - kvm
     append: true
 
 - name: Set permissions on libvirt socket file
