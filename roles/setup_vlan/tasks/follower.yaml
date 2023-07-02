@@ -5,7 +5,7 @@
     conn_name: "{{ bridge_name }}"
     type: bridge
     method4: auto
-    dns4: "{{ leader_ip_address }} 8.8.8.8 8.8.4.4"
+    dns4: "{{ dns_dhcp_ip_address }} 8.8.8.8 8.8.4.4"
     state: present
     autoconnect: true
 

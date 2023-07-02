@@ -16,7 +16,7 @@
   ansible.builtin.lineinfile:
     path: /etc/hosts
     regexp: '^127\.0\.1\.1.*{{ ansible_hostname }}'
-    line: '{{ leader_ip_address }} {{ ansible_hostname }}'
+    line: '{{ dns_dhcp_ip_address }} {{ ansible_hostname }}'
     state: present
 
 - name: Ensure dnsmasq is running

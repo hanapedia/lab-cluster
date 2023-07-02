@@ -2,7 +2,8 @@
 ---
 ip_address: 192.168.100.4
 interface_name: enp0s31f6
-leader: false
+dns_dhcp: false
+loadbalancer: true
 nodes:
   small: 3
   medium: 2

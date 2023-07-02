@@ -7,4 +7,9 @@ all:
         {{ node.name }}:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q {{ host }}"'
+{% if 'cp' in node.name %}
+          cp: true
+{% else %}
+          cp: false
+{% endif %}
 {% endfor %}

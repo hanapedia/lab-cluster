@@ -13,7 +13,7 @@ vlan_ip: 192.168.100.3
 vlan_gateway: 192.168.100.2
 
 # Static IP address assigned to lab1, which serves DHCP/DNS
-leader_ip_address: 192.168.100.3
+dns_dhcp_ip_address: 192.168.100.3
 
 # The name of the bridge to be used by the virtual network
 bridge_name: br0

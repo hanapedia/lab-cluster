@@ -29,7 +29,7 @@
       ansible.builtin.include_role:
         name: setup_node
 
-- hosts: leaders
+- hosts: physical_machines
   name: Wait for the vm leases
   become: true
   vars_files:
@@ -38,7 +38,8 @@
     ansible_become_password: "{{ sudo_password }}"
   tasks:
     - name: Include role to wait for connection
+      when: dns_dhcp
       ansible.builtin.include_role:
         name: check_node_connection
       vars:
-        node_names: groups['nodes']
+        node_names: "{{ groups['nodes'] }}"

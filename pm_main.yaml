@@ -1,6 +1,6 @@
 # vim: set filetype=yaml.ansible :
 ---
-- import_playbook: pm_setup_vlan_leader.yaml
+- import_playbook: pm_setup_vlan_dns_dhcp.yaml
 - import_playbook: pm_setup_vlan_follower.yaml
 - import_playbook: pm_setup_common.yaml
 - import_playbook: pm_setup_virtualization.yaml
