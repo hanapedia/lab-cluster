@@ -1,0 +1,54 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Stop NetworkManager
+  ansible.builtin.service:
+    name: NetworkManager
+    state: stopped
+
+- name: Add interface to firewalld's internal zone
+  ansible.posix.firewalld:
+    zone: public
+    interface: "{{ lb_interface_name }}"
+    permanent: true
+    immediate: true
+    state: disabled
+
+- name: Add interface to firewalld's internal zone
+  ansible.posix.firewalld:
+    zone: internal
+    interface: "{{ lb_interface_name }}"
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Start NetworkManager
+  ansible.builtin.service:
+    name: NetworkManager
+    state: started
+    enabled: true
+
+- name: Allow services for internal zone
+  ansible.posix.firewalld:
+    zone: internal
+    state: enabled
+    permanent: true
+    service: "{{ service }}"
+  loop: "{{ loadbalancer.services }}"
+  loop_control:
+    loop_var: service
+
+- name: Allow ports for internal zone
+  ansible.posix.firewalld:
+    zone: internal
+    state: enabled
+    permanent: true
+    port: "{{ port }}"
+  loop: "{{ loadbalancer.ports }}"
+  loop_control:
+    loop_var: port
+
+# - name: Restart firewalld
+#   ansible.builtin.service:
+#     name: firewalld
+#     state: restarted
+#     enabled: true

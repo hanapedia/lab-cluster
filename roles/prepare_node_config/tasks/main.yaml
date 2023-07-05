@@ -31,6 +31,7 @@
       when: nodes.large is defined
 
     - name: Build control plane node_configs
+      when: k8s.ha_control_plane
       ansible.builtin.set_fact:
         node_configs: "{{ node_configs + [{'name': 'cp' + '-' + host, 'node_group': 'small'}] }}"
 

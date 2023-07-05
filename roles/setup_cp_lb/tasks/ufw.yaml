@@ -1,0 +1,9 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Allow port 6443 by interface
+  community.general.ufw:
+    interface: "{{ lb_interface_name }}"
+    direction: in
+    rule: allow
+    port: "6443"
+    proto: tcp

@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure firewalld and haproxy are stopped
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - firewalld
+    - haproxy

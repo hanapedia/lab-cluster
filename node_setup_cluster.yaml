@@ -1,0 +1,4 @@
+# vim: set filetype=yaml.ansible :
+---
+- import_playbook: node_init_ha_cluster.yaml
+- import_playbook: node_init_single_cp_cluster.yaml

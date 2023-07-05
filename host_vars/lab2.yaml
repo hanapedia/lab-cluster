@@ -4,7 +4,8 @@ ip_address: 192.168.100.4
 interface_name: enp0s31f6
 dns_dhcp: false
 loadbalancer: true
+cp: true
 nodes:
-  small: 3
-  medium: 2
+  small: 1
+  medium: 1
   large: 1

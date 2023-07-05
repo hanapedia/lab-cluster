@@ -10,5 +10,11 @@
 
 - name: Install required packages
   ansible.builtin.apt:
-    name: "{{ os_packages }}"
+    name: "{{ guest_os_packages }}"
     state: present
+
+- name: Import cri tasks
+  ansible.builtin.import_tasks: cri.yaml
+
+- name: Import kube tasks
+  ansible.builtin.import_tasks: kube.yaml

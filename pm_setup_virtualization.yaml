@@ -14,6 +14,7 @@
         host: "{{ physical_machine }}"
         bridge_name: "{{ bridge.name }}"
         nodes: "{{ hostvars[physical_machine]['nodes'] }}"
+        cp_master: "{{ k8s.cp_master }}"
       loop: "{{ groups['physical_machines'] }}"
       loop_control:
         loop_var: physical_machine
@@ -29,8 +30,9 @@
       ansible.builtin.include_role:
         name: setup_node
 
-- hosts: physical_machines
+- hosts: nodes
   name: Wait for the vm leases
+  gather_facts: false
   become: true
   vars_files:
     - ./vars/secret.yaml
@@ -38,7 +40,6 @@
     ansible_become_password: "{{ sudo_password }}"
   tasks:
     - name: Include role to wait for connection
-      when: dns_dhcp
       ansible.builtin.include_role:
         name: check_node_connection
       vars:

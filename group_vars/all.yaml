@@ -2,6 +2,7 @@
 ---
 # The name will be used for the domain name of the cluster as well
 cluster:
+  name: lab
   domain: cluster.io
 
   # name of the user that will be used on all machines
@@ -33,3 +34,20 @@ vlan:
 bridge:
   # The name of the bridge to be used by the virtual network
   name: br0
+
+# Kubernetes configuration
+k8s:
+  # version of kubernetes
+  version: '1.27'
+
+  # cri to use. only crio supported
+  cri: crio
+
+  # indicates whether to deploy the cluster in ha mode
+  ha_control_plane: false
+
+  # control plane master node
+  cp_master: lab2
+
+  # loadbalancer node
+  loadbalancer: lab2

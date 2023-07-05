@@ -1,0 +1,14 @@
+# vim: set filetype=yaml.ansible :
+---
+# configuration for loadbalancer
+loadbalancer:
+  packages:
+    - haproxy
+    - firewalld
+    - network-manager
+  services:
+    - https
+    - http
+  ports:
+    - "6443/tcp"
+lb_interface_name: br0

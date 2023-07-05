@@ -6,16 +6,15 @@ all:
         small1-lab1:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
-          cp: false
+          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
+          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
         medium1-lab1:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
-          cp: false
-        medium2-lab1:
+          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
+          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
+        large1-lab1:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
-          cp: false
-        cp-lab1:
-          ansible_user: ubuntu
-          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab1"'
-          cp: true
+          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
+          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'

@@ -1,0 +1,22 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Join nodes to cluster
+  vars:
+    kube_token: "{{ hostvars[cp_master].kube_token }}"
+    kube_hash: "{{ hostvars[cp_master].kube_hash }}"
+    kube_cert: "{{ hostvars[cp_master].kube_cert }}"
+  when: joined_node is not defined
+  block:
+    - name: Apply join configuration template for nodes
+      changed_when: true
+      ansible.builtin.template:
+        src: kubeadm-join-config.yaml.j2
+        dest: /tmp/kubeadm-join.yaml
+        mode: "0755"
+
+    - name: Join nodes to cluster
+      ansible.builtin.command: kubeadm join --config /tmp/kubeadm-join.yaml
+      register: joined_node
+      when: joined_node is not defined
+      failed_when: "'ERROR' in joined_node.stderr"
+      changed_when: true

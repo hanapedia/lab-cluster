@@ -1,0 +1,19 @@
+# vim: set filetype=yaml.ansible :
+---
+# host name of the master control plane node
+cp_master: cp-lab2
+
+# name of the cluster
+cluster_name: lab
+
+# cidr for the service network
+service_cidr: 10.110.0.0/16
+
+# cni plugin to be used
+cni_plugin: flannel
+
+# default cidr for the pod network
+pod_cidr: 10.20.0.0/16
+
+# loadbalancer endpoint / fqdn
+control_plane_endpoint: lab2
