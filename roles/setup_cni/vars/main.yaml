@@ -1,0 +1,18 @@
+# vim: set filetype=yaml.ansible :
+---
+kube_config_path: ~/.kube/configs/lab
+cni_plugin: flannel
+
+flannel:
+  repo: https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+calico:
+  repo: https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/tigera-operator.yaml
+  operator: https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/tigera-operator.yaml
+  crd: https://raw.githubusercontent.com/projectcalico/calico/v3.24.0/manifests/custom-resources.yaml
+
+cilium:
+  chart:
+    name: cilium
+    ref: cilium/cilium
+    url: https://helm.cilium.io/

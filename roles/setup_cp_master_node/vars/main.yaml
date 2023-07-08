@@ -17,3 +17,12 @@ pod_cidr: 10.20.0.0/16
 
 # loadbalancer endpoint / fqdn
 control_plane_endpoint: lab2
+
+# static ip of the control plane
+api_server_ip: 192.168.100.5
+
+# vlan gateway
+vlan_gateway: 192.168.100.2
+
+# vlan dns server address
+vlan_dns_server_ip: 192.168.100.3

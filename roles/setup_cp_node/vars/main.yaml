@@ -4,4 +4,4 @@
 cp_master: cp-lab2
 
 # loadbalancer endpoint / fqdn
-control_plane_endpoint: lab2
+control_plane_endpoint: cp-lab2

@@ -1,0 +1,11 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Set static IP address
+  ansible.builtin.template:
+    src: 70-static-ip.yaml.j2
+    dest: /etc/netplan/70-static-ip.yaml
+    mode: "0755"
+
+- name: Apply netplan
+  ansible.builtin.command: netplan apply
+  changed_when: true

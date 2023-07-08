@@ -1,6 +1,6 @@
 # vim: set filetype=yaml.ansible :
 ---
-- hosts: physical_machines, nodes
+- hosts: nodes
   name: Common setup on the physical machines
   become: true
   vars_files:

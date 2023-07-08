@@ -1,0 +1,37 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Apply calico plugin
+  when: cni_plugin == 'calico'
+  block:
+    - name: Make sure download destination exists
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/out/k8s/calico/"
+        state: directory
+        mode: '0755'
+
+    - name: Download calico manifest
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.name }}"
+        mode: '0644'
+      loop:
+        - name: "{{ playbook_dir }}/out/k8s/calico/calico-operator.yaml"
+          url: "{{ calico.operator }}"
+        - name: "{{ playbook_dir }}/out/k8s/calico/calico-crd.yaml"
+          url: "{{ calico.crd }}"
+
+    - name: Apply custom CIDR to calico installation manifest
+      ansible.builtin.replace:
+        path: "{{ playbook_dir }}/out/k8s/calico/calico-crd.yaml"
+        regexp: 192.168.0.0\/16
+        replace: 10.20.0.0/16
+
+    - name: Apply calico manifests to the cluster.
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ item }}"
+        kubeconfig: "{{ kube_config_path }}"
+        wait: true
+      loop:
+        - "{{ playbook_dir }}/out/k8s/calico/calico-operator.yaml"
+        - "{{ playbook_dir }}/out/k8s/calico/calico-crd.yaml"

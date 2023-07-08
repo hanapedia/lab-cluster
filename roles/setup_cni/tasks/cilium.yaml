@@ -1,0 +1,24 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Configure Cilium
+  when: cni_plugin == 'cilium'
+  block:
+    - name: Add helm chart repository for Cilium
+      kubernetes.core.helm_repository:
+        name: "{{ item.name }}"
+        repo_url: "{{ item.repo_url }}"
+      loop:
+        - name: "{{ cilium.chart.name }}"
+          repo_url: "{{ cilium.chart.url }}"
+
+    - name: Ensure Cilium helm chart is installed
+      kubernetes.core.helm:
+        name: cilium
+        chart_ref: "{{ cilium.chart.ref }}"
+        kubeconfig: "{{ kube_config_path }}"
+        release_namespace: kube-system
+        update_repo_cache: true
+        values:
+          ipam:
+            mode: kubernetes
+        wait: true

@@ -41,3 +41,5 @@ node_configs: [] # READONLY
   #   node_group: large
   #
 cp_master: cp-lab2
+
+cp: false

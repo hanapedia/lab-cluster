@@ -1,4 +1,49 @@
 # vim: set filetype=yaml.ansible :
 ---
-- import_playbook: node_init_ha_cluster.yaml
-- import_playbook: node_init_single_cp_cluster.yaml
+- hosts: physical_machines
+  name: Make sure static ip will be assigned to the control plane node
+  become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+  tasks:
+    - name: Add static IP entry
+      when: dns_dhcp
+      block:
+        - name: Include role to add static ip entry
+          ansible.builtin.include_role:
+            name: configure_static_ip
+
+- hosts: nodes
+  name: Initiate kubernetes cluster
+  become: true
+  tasks:
+    - name: Setup master node
+      when: cp
+      block:
+        - name: Include role to setup master control plane node
+          ansible.builtin.include_role:
+            name: setup_cp_master_node
+          vars:
+            cluster_name: "{{ cluster.name }}"
+            cp_master: "{{ k8s.cp_master }}"
+            control_plane_endpoint: "{{ k8s.cp_master }}"
+            cni_plugin: "{{ k8s.cni }}"
+            api_server_ip: "{{ k8s.cp_address }}"
+            vlan_gateway: "{{ vlan.gateway }}"
+            vlan_dns_server_ip: "{{ vlan.dns_dhcp.server_ip }}"
+
+- hosts: nodes
+  name: Join kubernetes cluster worker nodes
+  become: true
+  tasks:
+    - name: Setup worker nodes
+      when: not cp
+      block:
+        - name: Include role to join worker node
+          ansible.builtin.include_role:
+            name: setup_worker_node
+          vars:
+            cp_master: "{{ k8s.cp_master }}"
+            control_plane_endpoint: "{{ k8s.cp_address }}"

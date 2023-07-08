@@ -14,6 +14,7 @@
         host: "{{ physical_machine }}"
         bridge_name: "{{ bridge.name }}"
         nodes: "{{ hostvars[physical_machine]['nodes'] }}"
+        cp: "{{ hostvars[physical_machine]['cp'] }}"
         cp_master: "{{ k8s.cp_master }}"
       loop: "{{ groups['physical_machines'] }}"
       loop_control:

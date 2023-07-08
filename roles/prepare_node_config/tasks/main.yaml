@@ -31,9 +31,9 @@
       when: nodes.large is defined
 
     - name: Build control plane node_configs
-      when: k8s.ha_control_plane
+      when: cp
       ansible.builtin.set_fact:
-        node_configs: "{{ node_configs + [{'name': 'cp' + '-' + host, 'node_group': 'small'}] }}"
+        node_configs: "{{ node_configs + [{'name': 'cp' + '-' + host, 'node_group': 'medium'}] }}"
 
 - name: Import network terraform preparation tasks
   ansible.builtin.import_tasks: resource.yaml

@@ -8,6 +8,12 @@ bootstrapTokens:
 kind: ClusterConfiguration
 apiVersion: kubeadm.k8s.io/v1beta3
 clusterName: {{ cluster_name }}
+apiServer:
+  extraArgs:
+    advertise-address: {{ api_server_ip }}
+  certSANs:
+  - {{ api_server_ip }}
+  - {{ control_plane_endpoint }}
 networking:
   serviceSubnet: {{ service_cidr }}
 {% if cni_plugin == 'flannel' %}
@@ -21,4 +27,3 @@ controlPlaneEndpoint: {{ control_plane_endpoint }}
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 cgroupDriver: systemd
-
