@@ -1,0 +1,21 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: CNI setup
+  block:
+    - name: Get the username
+      ansible.builtin.command: whoami
+      register: whoami
+      changed_when: true
+      become: false
+
+    - name: Import flannel installation tasks
+      when: cni_plugin == 'flannel'
+      ansible.builtin.import_tasks: flannel.yaml
+
+    - name: Import calico installation tasks
+      when: cni_plugin == 'calico'
+      ansible.builtin.import_tasks: calico.yaml
+
+    - name: Import cilium installation tasks
+      when: cni_plugin == 'cilium'
+      ansible.builtin.import_tasks: cilium.yaml

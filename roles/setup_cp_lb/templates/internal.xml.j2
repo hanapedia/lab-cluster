@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Internal</short>
+  <description>For use on internal networks.</description>
+  <interface name="{{ lb_interface_name }}" />
+  <service name="ssh" />
+  <service name="https" />
+  <service name="http" />
+  <port protocol="tcp" port="6443"/>
+  <!-- Add any other services or ports you want to allow in this zone -->
+</zone>

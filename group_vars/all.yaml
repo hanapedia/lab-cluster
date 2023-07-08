@@ -2,10 +2,14 @@
 ---
 # The name will be used for the domain name of the cluster as well
 cluster:
+  name: lab
   domain: cluster.io
 
   # name of the user that will be used on all machines
   user: hanapedia
+
+  # name of the user in vms
+  node_user: ubuntu
 
 vlan:
   # Default VLAN ID, configured on the network switch
@@ -33,3 +37,23 @@ vlan:
 bridge:
   # The name of the bridge to be used by the virtual network
   name: br0
+
+# Kubernetes configuration
+k8s:
+  # version of kubernetes
+  version: '1.27'
+
+  # cri to use. only crio supported
+  cri: crio
+
+  # control plane master node
+  cp_master: cp-lab2
+
+  # control plane master node
+  cp_address: 192.168.100.5
+
+  # loadbalancer node
+  loadbalancer: lab2
+
+  # cni to use. flannel, *calico, *cilium
+  cni: flannel

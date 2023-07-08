@@ -1,0 +1,12 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Replace existing static DHCP lease to dnsmasq configuration
+  ansible.builtin.lineinfile:
+    path: /etc/dnsmasq.conf
+    regexp: '^dhcp-host={{ static_hostname }}.*'
+    line: 'dhcp-host={{ static_hostname }},{{ static_ip }}'
+
+- name: Restart dnsmasq
+  ansible.builtin.systemd:
+    state: restarted
+    name: dnsmasq

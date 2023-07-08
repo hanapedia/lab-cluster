@@ -40,3 +40,6 @@ node_configs: [] # READONLY
   # - name: large1-lab2
   #   node_group: large
   #
+cp_master: cp-lab2
+
+cp: false

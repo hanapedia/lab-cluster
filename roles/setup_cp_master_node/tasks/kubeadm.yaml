@@ -1,0 +1,51 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Setup cluster with kubeadm
+  block:
+    - name: Generate cluster token
+      ansible.builtin.command: kubeadm token generate
+      register: kube_token
+      when: kube_token is not defined
+      changed_when: true
+
+    - name: Set token as fact
+      ansible.builtin.set_fact:
+        kube_token: "{{ kube_token.stdout }}"
+
+    - name: Generate certificate key
+      ansible.builtin.command: kubeadm certs certificate-key
+      register: kube_cert
+      when: kube_cert is not defined
+      changed_when: true
+
+    - name: Set cert as fact
+      ansible.builtin.set_fact:
+        kube_cert: "{{ kube_cert.stdout }}"
+
+    - name: Add kubeadm config
+      ansible.builtin.template:
+        src: kubeadm-config.yaml.j2
+        dest: /tmp/kubeadm-config.yaml
+        mode: '0755'
+
+- name: Install k8s with kubeadm
+  block:
+    - name: Initiate k8s
+      ansible.builtin.command: kubeadm init --config /tmp/kubeadm-config.yaml --upload-certs
+      register: kube_init
+      when: kube_init is not defined
+      failed_when: "'ERROR' in kube_init.stderr"
+      changed_when: true
+
+    - name: Get information on generated certificate
+      ansible.builtin.openssl_certificate_info:
+        path: /etc/kubernetes/pki/ca.crt
+      register: cert
+
+    - name: Set cert hash as fact
+      ansible.builtin.set_fact:
+        kube_hash: "sha256:{{ cert.public_key_fingerprints.sha256 | replace(':', '') }}"
+
+    - name: Mark k8s as installed
+      ansible.builtin.set_fact:
+        k8s_installed: true

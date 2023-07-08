@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Import netplan tasks
+  ansible.builtin.import_tasks: netplan.yaml
+
+- name: Import kubeadm tasks
+  ansible.builtin.import_tasks: kubeadm.yaml

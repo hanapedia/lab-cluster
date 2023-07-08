@@ -1,6 +1,6 @@
 # vim: set filetype=yaml.ansible :
 ---
-- hosts: followers
+- hosts: physical_machines
   name: Setup VLAN on network interface
   become: true
   vars_files:
@@ -9,7 +9,7 @@
     ansible_become_password: "{{ sudo_password }}"
   tasks:
     - name: Include role to setup vlan
-      when: not leader
+      when: not dns_dhcp
       ansible.builtin.include_role:
         name: setup_vlan
       vars:

@@ -1,0 +1,29 @@
+# vim: set filetype=yaml.ansible :
+---
+guest_os_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+
+cri: crio
+
+# repo keys for libcontainers
+libcontainers:
+  repo: deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/ /
+  key: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/Release.key
+  keyring: /etc/apt/trusted.gpg.d/libcontainers.gpg
+
+crio:
+  repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ k8s_version }}/xUbuntu_22.04/ /"
+  key: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:/{{ k8s_version }}/xUbuntu_22.04/Release.key"
+  keyring: /etc/apt/trusted.gpg.d/libcontainers-cri-o.gpg
+
+google_cloud:
+  repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+  key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  keyring: /etc/apt/trusted.gpg.d/kubernetes-archive-keyring.gpg
+  packages:
+    - kubelet
+    - kubeadm
+    - kubectl

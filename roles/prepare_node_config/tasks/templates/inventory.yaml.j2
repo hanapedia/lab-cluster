@@ -7,4 +7,11 @@ all:
         {{ node.name }}:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q {{ host }}"'
+          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
+          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
+{% if 'cp' in node.name %}
+          cp: true
+{% else %}
+          cp: false
+{% endif %}
 {% endfor %}

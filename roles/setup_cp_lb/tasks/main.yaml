@@ -1,0 +1,30 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ loadbalancer.packages }}"
+    state: present
+
+- name: Ensure firewalld, haproxy, and NM are enabled
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    # - firewalld
+    - haproxy
+    - NetworkManager
+
+- name: Extract facts from setup
+  ansible.builtin.setup:
+  register: machine_facts
+
+# - name: Import firewalld tasks
+#   ansible.builtin.import_tasks: firewalld_by_template.yaml
+  # ansible.builtin.import_tasks: firewalld.yaml
+
+- name: Import ufw tasks
+  ansible.builtin.import_tasks: ufw.yaml
+
+- name: Import haproxy tasks
+  ansible.builtin.import_tasks: haproxy.yaml

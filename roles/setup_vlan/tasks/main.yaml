@@ -38,14 +38,14 @@
       ansible.builtin.command:
         cmd: "nmcli device set {{ vlan_interface }} managed yes"
 
-- name: Leader setup
-  when: leader
+- name: DNS DHCP setup
+  when: dns_dhcp
   block:
-    - name: Import leader tasks
+    - name: Import dns_dhcp tasks
       ansible.builtin.import_tasks: leader.yaml
 
 - name: Follower setup
-  when: not leader
+  when: not dns_dhcp
   block:
     - name: Import follower tasks
       ansible.builtin.import_tasks: follower.yaml

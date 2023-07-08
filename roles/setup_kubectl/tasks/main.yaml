@@ -1,0 +1,28 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Get the username
+  ansible.builtin.command: whoami
+  register: whoami
+  changed_when: true
+  become: false
+
+- name: Create kube directory
+  ansible.builtin.file:
+    path: "/home/{{ whoami.stdout }}/.kube"
+    state: directory
+    mode: '0755'
+
+- name: Copy kubeconfig
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ whoami.stdout }}/.kube/config"
+    owner: "{{ whoami.stdout }}"
+    group: "{{ whoami.stdout }}"
+    remote_src: true
+    mode: '0755'
+
+- name: Fetch kubeconfig
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ hostvars['localhost'].local_kubeconfig_path }}"
+    flat: true

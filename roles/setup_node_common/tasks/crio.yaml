@@ -1,0 +1,59 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure libseccomp2 is installed and up to date
+  ansible.builtin.apt:
+    name: libseccomp2
+    state: present
+
+- name: Add crio repo key
+  ansible.builtin.apt_key:
+    url: "{{ item.key }}"
+    keyring: "{{ item.keyring }}"
+    state: present
+  loop:
+    - key: "{{ libcontainers.key }}"
+      keyring: "{{ libcontainers.keyring }}"
+    - key: "{{ crio.key }}"
+      keyring: "{{ crio.keyring }}"
+
+- name: Ensure the presence of apt-repo for cri-o
+  ansible.builtin.apt_repository:
+    repo: "{{ item.repo }}"
+    filename: "{{ item.file }}"
+    state: present
+  loop:
+    - repo: "{{ libcontainers.repo }}"
+      file: /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+    - repo: "{{ crio.repo }}"
+      file: "/etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:{{ k8s_version }}.list"
+
+- name: Ensure cri-o is installed
+  ansible.builtin.apt:
+    name:
+      - cri-o
+      - cri-o-runc
+    state: present
+
+- name: Fire crio-conf template
+  ansible.builtin.template:
+    src: crio.conf.j2
+    dest: /etc/crio/crio.conf
+    mode: "0755"
+
+- name: Remove example CNI configs
+  ansible.builtin.file:
+    path: "/etc/cni/net.d/{{ item }}"
+    state: absent
+  loop:
+    - 100-crio-bridge.conf
+    - 200-loopback.conf
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Ensure cri-o is enabled and started
+  ansible.builtin.systemd:
+    name: crio
+    state: started
+    enabled: true

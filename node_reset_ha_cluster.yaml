@@ -1,0 +1,10 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: nodes
+  name: Reset kubeadm command
+  become: true
+  tasks:
+    - name: Destroy k8s cluster
+      when: cp
+      ansible.builtin.command: kubeadm reset -f
+      changed_when: true

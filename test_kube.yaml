@@ -1,0 +1,14 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: localhost
+  name: Wait for the vm connection
+  gather_facts: false
+  vars:
+    kube_config_path: "{{ local_kubeconfig_path }}"
+  tasks:
+    - name: Apply flannel manifests to the cluster.
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ playbook_dir }}/out/k8s/flannel/kube-flannel.yaml"
+        kubeconfig: "{{ kube_config_path }}"
+        wait: true

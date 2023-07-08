@@ -1,0 +1,36 @@
+# vim: set filetype=yaml.ansible :
+- name: Add prerequisite modules to autostart
+  ansible.builtin.blockinfile:
+    path: /etc/modules-load.d/k8s.conf
+    block: |
+      overlay
+      br_netfilter
+    create: true
+    mode: '1777'
+
+- name: Enable prerequisite modules
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - br_netfilter
+    - overlay
+
+- name: Enable sysctl values
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: true
+    sysctl_set: true
+  loop:
+    - key: net.ipv4.ip_forward
+      value: 1
+    - key: net.bridge.bridge-nf-call-ip6tables
+      value: 1
+    - key: net.bridge.bridge-nf-call-iptables
+      value: 1
+
+- name: Install CRI-O
+  when: cri == 'crio'
+  ansible.builtin.import_tasks: crio.yaml

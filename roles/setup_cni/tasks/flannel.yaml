@@ -1,0 +1,29 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Configure flannel
+  when: cni_plugin == 'flannel'
+  block:
+    - name: Make sure download destination exists
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/out/k8s/flannel/"
+        state: directory
+        mode: '0755'
+
+    - name: Download flannel manifest
+      ansible.builtin.get_url:
+        url: "{{ flannel.repo }}"
+        dest: "{{ playbook_dir }}/out/k8s/flannel/kube-flannel.yaml"
+        mode: "0755"
+
+    - name: Patch kube-flannel to use host-gw instead of vxlan
+      ansible.builtin.replace:
+        path: "{{ playbook_dir }}/out/k8s/flannel/kube-flannel.yaml"
+        regexp: 'vxlan'
+        replace: 'host-gw'
+
+    - name: Apply flannel manifests to the cluster.
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ playbook_dir }}/out/k8s/flannel/kube-flannel.yaml"
+        kubeconfig: "{{ kube_config_path }}"
+        wait: true

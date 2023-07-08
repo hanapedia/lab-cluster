@@ -30,6 +30,11 @@
         loop_var: i
       when: nodes.large is defined
 
+    - name: Build control plane node_configs
+      when: cp
+      ansible.builtin.set_fact:
+        node_configs: "{{ node_configs + [{'name': 'cp' + '-' + host, 'node_group': 'medium'}] }}"
+
 - name: Import network terraform preparation tasks
   ansible.builtin.import_tasks: resource.yaml
 

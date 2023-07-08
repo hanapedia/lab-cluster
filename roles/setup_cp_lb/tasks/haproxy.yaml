@@ -1,0 +1,13 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Create haproxy config
+  ansible.builtin.template:
+    src: haproxy.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: "0755"
+
+- name: Restart haproxy
+  ansible.builtin.service:
+    name: haproxy
+    state: restarted
+    enabled: true

@@ -1,0 +1,44 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Add crio repo key
+  ansible.builtin.apt_key:
+    url: "{{ google_cloud.key }}"
+    keyring: "{{ google_cloud.keyring }}"
+    state: present
+
+- name: Ensure the presence of apt-repo for cri-o
+  ansible.builtin.apt_repository:
+    repo: "{{ google_cloud.repo }}"
+    filename: /etc/apt/sources.list.d/kubernetes.list
+    state: present
+
+- name: Install google_cloud packages
+  ansible.builtin.apt:
+    name: "{{ package }}={{ k8s_version }}.3-00"
+    state: present
+  loop: "{{ google_cloud.packages }}"
+  loop_control:
+    loop_var: package
+
+- name: Ensure kubelet, kubeadm, kubectl are on hold
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop: "{{ google_cloud.packages }}"
+
+- name: Disable swaps
+  ansible.builtin.command: swapoff -a
+  changed_when: true
+
+- name: Remove swap entry from filesystem table
+  ansible.builtin.lineinfile:
+    line: "/dev/mapper/cl-swap swap"
+    path: /etc/fstab
+    state: absent
+
+- name: Enable kubelet
+  ansible.builtin.systemd:
+    name: kubelet
+    state: started
+    enabled: true
+  # notify: Reboot nodes

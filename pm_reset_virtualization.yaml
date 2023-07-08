@@ -10,3 +10,18 @@
     - name: Include role to setup vm on physical machines
       ansible.builtin.include_role:
         name: reset_node
+
+- hosts: localhost
+  name: Reset knowhosts
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ localhost_sudo_password }}"
+  tasks:
+    - name: Reset knowhosts
+      changed_when: true
+      ansible.builtin.command:
+        cmd: "ssh-keygen -R {{ node }}"
+      loop: "{{ groups['nodes'] }}"
+      loop_control:
+        loop_var: node

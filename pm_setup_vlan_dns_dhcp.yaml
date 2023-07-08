@@ -1,6 +1,6 @@
 # vim: set filetype=yaml.ansible :
 ---
-- hosts: leaders
+- hosts: physical_machines
   name: Setup VLAN on network interface
   become: true
   vars_files:
@@ -8,14 +8,14 @@
   vars:
     ansible_become_password: "{{ sudo_password }}"
   tasks:
-    - name: Set fact with IP address of leader physical_machines
+    - name: Set fact with IP address of dns/dhcp server physical_machines
       ansible.builtin.set_fact:
-        leader_ip_address: "{{ hostvars[item].ip_address }}"
-      when: hostvars[item].leader | default(false) | bool
-      loop: "{{ groups['leaders'] }}"
+        dns_dhcp_ip_address: "{{ hostvars[item].ip_address }}"
+      when: hostvars[item].dns_dhcp | default(false) | bool
+      loop: "{{ groups['physical_machines'] }}"
 
     - name: Include role to setup vlan
-      when: leader
+      when: dns_dhcp
       ansible.builtin.include_role:
         name: setup_vlan
       vars:
@@ -34,8 +34,8 @@
         # The name of the bridge to be used by the virtual network
         bridge_name: "{{ bridge.name }}"
 
-    - name: Include role to setup dhcp/dns server on leader machine
-      when: leader
+    - name: Include role to setup dhcp/dns server on dns_dhcp machine
+      when: dns_dhcp
       ansible.builtin.include_role:
         name: setup_dnsmasq
       vars:
