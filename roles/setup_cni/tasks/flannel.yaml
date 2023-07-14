@@ -21,6 +21,12 @@
         regexp: 'vxlan'
         replace: 'host-gw'
 
+    - name: Add a line after the kube-subnet-mgr option
+      ansible.builtin.lineinfile:
+        path: "{{ playbook_dir }}/out/k8s/flannel/kube-flannel.yaml"
+        insertafter: '^\s*- --kube-subnet-mgr'
+        line: '        - --iface=ens4'
+
     - name: Apply flannel manifests to the cluster.
       kubernetes.core.k8s:
         state: present

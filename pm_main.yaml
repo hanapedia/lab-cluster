@@ -6,3 +6,4 @@
 - import_playbook: pm_setup_virtualization.yaml
 - import_playbook: node_setup_common.yaml
 - import_playbook: node_setup_cluster.yaml
+- import_playbook: node_finalize_cluster.yaml

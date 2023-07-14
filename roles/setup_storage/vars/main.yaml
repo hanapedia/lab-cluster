@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+kube_config_path: ~/.kube/configs/lab
+storage_plugin: openebs
+
+openebs:
+  repo: https://openebs.github.io/charts/openebs-operator.yaml

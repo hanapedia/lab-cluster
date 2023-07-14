@@ -45,8 +45,8 @@
     path: "/etc/cni/net.d/{{ item }}"
     state: absent
   loop:
-    - 100-crio-bridge.conf
-    - 200-loopback.conf
+    - 100-crio-bridge.conflist
+    - 200-loopback.conflist
 
 - name: Force systemd to reread configs
   ansible.builtin.systemd:

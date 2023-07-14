@@ -1,0 +1,7 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Storage setup
+  block:
+    - name: Import openebs installation tasks
+      when: storage_plugin == 'openebs'
+      ansible.builtin.import_tasks: openebs.yaml

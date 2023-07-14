@@ -1,12 +1,8 @@
 # vim: set filetype=yaml.ansible :
 ---
 - hosts: nodes
-  name: Setup Kubectl
+  name: Prerequisite for openebs
   become: true
-  vars_files:
-    - ./vars/secret.yaml
-  vars:
-    ansible_become_password: "{{ sudo_password }}"
   tasks:
     - name: Setup Kubectl
       when: cp
@@ -14,6 +10,7 @@
         - name: Include role to setup kubectl
           ansible.builtin.include_role:
             name: setup_kubectl
+
 
 - hosts: localhost
   name: Setup CNI
@@ -23,23 +20,6 @@
     ansible_become_password: "{{ localhost_sudo_password }}"
   gather_facts: false
   tasks:
-    # - name: Establish SSH tunnel
-    #   ansible.builtin.command:
-    #     argv:
-    #       - ssh
-    #       - -fNL
-    #       - "6443:{{ k8c.cp_master }}:6443"
-    #       - -J
-    #       - lab2
-    #       - -i
-    #       - "{{ identity_file_path }}"
-    #       - -o
-    #       - IdentitiesOnly=yes
-    #       - "{{ cluster.node_user }}@{{ k8s.cp_master }}"
-    #   async: 3600
-    #   poll: 0
-    #   changed_when: true
-    #
     - name: Replace the server address in kubeconfig
       ansible.builtin.replace:
         path: "{{ local_kubeconfig_path }}"
@@ -52,10 +32,3 @@
         path: /etc/hosts
         line: '127.0.0.1 kubernetes'
         state: present
-
-    # - name: Include role to setup CNI
-    #   ansible.builtin.include_role:
-    #     name: setup_cni
-    #   vars:
-    #     cni_plugin: "{{ k8s.cni }}"
-    #     kube_config_path: "{{ local_kubeconfig_path }}"

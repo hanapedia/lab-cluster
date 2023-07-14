@@ -13,3 +13,9 @@
       when: cp
       ansible.builtin.command: kubeadm reset -f
       changed_when: true
+
+    - name: Remove flannel cni config
+      when: cp
+      ansible.builtin.file:
+        path: "/etc/cni/net.d/10-flannel.conflist"
+        state: absent
