@@ -13,7 +13,7 @@
 
 
 - hosts: localhost
-  name: Setup CNI
+  name: Setup kubeconfig on localhost
   vars_files:
     - ./vars/secret.yaml
   vars:

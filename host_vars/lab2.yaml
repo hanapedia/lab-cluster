@@ -6,6 +6,4 @@ dns_dhcp: false
 loadbalancer: true
 cp: true
 nodes:
-  small: 1
-  medium: 1
-  large: 1
+  medium: 3

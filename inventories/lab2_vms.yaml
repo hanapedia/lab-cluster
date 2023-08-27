@@ -3,19 +3,19 @@ all:
   children:
     nodes:
       hosts:
-        small1-lab2:
-          ansible_user: ubuntu
-          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab2"'
-          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
-          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
-          cp: false
         medium1-lab2:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab2"'
           ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
           ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
           cp: false
-        large1-lab2:
+        medium2-lab2:
+          ansible_user: ubuntu
+          ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab2"'
+          ansible_ssh_private_key_file: '~/.ssh/id_ed25519'
+          ansible_ssh_extra_args: '-o IdentitiesOnly=yes'
+          cp: false
+        medium3-lab2:
           ansible_user: ubuntu
           ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q lab2"'
           ansible_ssh_private_key_file: '~/.ssh/id_ed25519'

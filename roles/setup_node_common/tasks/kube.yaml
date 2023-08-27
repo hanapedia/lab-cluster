@@ -16,6 +16,7 @@
   ansible.builtin.apt:
     name: "{{ package }}={{ k8s_version }}.3-00"
     state: present
+    allow_downgrade: true
   loop: "{{ google_cloud.packages }}"
   loop_control:
     loop_var: package

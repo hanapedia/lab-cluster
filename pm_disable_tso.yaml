@@ -1,0 +1,42 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Configure Systemd service to disable TSO
+  hosts: physical_machines
+  become: true
+  vars_files:
+    - ./vars/secret.yaml
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+    network_interface: enp0s31f6
+  tasks:
+    - name: Create systemd service to disable TSO
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/disable-tso.service
+        content: |
+          [Unit]
+          Description=Disable TCP Segmentation Offload (TSO)
+
+          [Service]
+          ExecStart=/sbin/ethtool -K {{ network_interface }} tso off
+          Type=oneshot
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: "0755"
+
+    - name: Enable and start the service
+      ansible.builtin.systemd:
+        name: disable-tso.service
+        enabled: true
+        state: started
+
+    # - name: Disable and stop the service
+    #   ansible.builtin.systemd:
+    #     name: disable-tso.service
+    #     enabled: false
+    #     state: stopped
+
+    # - name: Remove systemd service to disable TSO
+    #   ansible.builtin.file:
+    #     path: /etc/systemd/system/disable-tso.service
+    #     state: absent
