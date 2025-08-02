@@ -1,3 +1,4 @@
 vault_password
 out/**
 host_vars/**
+**/.DS_Store

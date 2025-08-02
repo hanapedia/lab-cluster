@@ -1,0 +1,16 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Ensure the lines are present in the file
+  ansible.builtin.blockinfile:
+    path: /etc/containers/registries.conf
+    block: |
+      [[registry]]
+      prefix = "docker.io"
+      insecure = false
+      blocked = false
+      location = "docker.io"
+
+      [[registry.mirror]]
+      location = "localhost:31500"
+      insecure = true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"

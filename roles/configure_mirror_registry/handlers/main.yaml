@@ -1,0 +1,4 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Reboot nodes
+  ansible.builtin.reboot:

@@ -1,0 +1,5 @@
+# vim: set filetype=yaml.ansible :
+---
+- name: Update CRI-O config
+  when: cri == 'crio'
+  ansible.builtin.import_tasks: crio.yaml

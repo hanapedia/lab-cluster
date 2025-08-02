@@ -1,0 +1,11 @@
+# vim: set filetype=yaml.ansible :
+---
+- hosts: nodes
+  name: 
+  become: true
+  tasks:
+    - name: Update mirror settings
+      block:
+        - name: Include role to update mirror config
+          ansible.builtin.include_role:
+            name: configure_mirror_registry
